@@ -1,0 +1,38 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  # Definisi service untuk aplikasi web
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      # Poin ini memenuhi syarat agar kode bisa diubah dan hasilnya
+      # langsung terlihat di browser tanpa harus rebuild image. 
+      - ./app:/app
+    env_file:
+      # Poin ini memenuhi syarat untuk memuat data privasi dari file .env. 
+      - .env
+    depends_on:
+      - db
+
+  # Definisi service untuk database
+  db:
+    image: postgres:14-alpine
+    # Poin ini memenuhi syarat bahwa aplikasi web dan database
+    # dijalankan di container yang berbeda. 
+    environment:
+      # Menggunakan variabel dari file .env untuk setup database
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # Poin ini memenuhi syarat bahwa saat container aplikasi web dirusak,
+      # data di database masih bisa jalan (tersimpan aman). 
+      - db-data:/var/lib/postgresql/data
+
+# Definisi volume untuk persistensi data database
+volumes:
+  db-data:

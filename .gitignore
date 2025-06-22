@@ -1,0 +1,10 @@
+# File environment, berisi data rahasia
+.env
+
+# Folder cache Python
+__pycache__/
+*.pyc
+
+# Folder sistem operasi
+.DS_Store
+Thumbs.db
