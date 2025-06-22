@@ -1,0 +1,31 @@
+# .github/workflows/docker-build.yml
+
+name: CI - Build Docker Image
+
+# Workflow ini akan berjalan setiap kali ada 'push' ke branch 'main'
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Mendefinisikan pekerjaan (jobs) yang akan dilakukan
+jobs:
+  # Kita hanya punya satu job bernama 'build'
+  build:
+    # Job ini akan berjalan di mesin virtual Ubuntu versi terbaru
+    runs-on: ubuntu-latest
+
+    # Langkah-langkah yang akan dieksekusi oleh job 'build'
+    steps:
+    # Langkah 1: Mengunduh kode dari repositori Anda ke mesin virtual
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Langkah 2: Menyiapkan Docker Buildx, sebuah builder Docker canggih
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Langkah 3: Menjalankan perintah build image Docker
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-app-image:latest
