@@ -20,19 +20,32 @@ services:
 
   # Definisi service untuk database
   db:
-    image: postgres:14-alpine
+    image: mysql:8.0
     # Poin ini memenuhi syarat bahwa aplikasi web dan database
     # dijalankan di container yang berbeda. 
     environment:
       # Menggunakan variabel dari file .env untuk setup database
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       # Poin ini memenuhi syarat bahwa saat container aplikasi web dirusak,
       # data di database masih bisa jalan (tersimpan aman). 
-      - db-data:/var/lib/postgresql/data
-
+      - db-data:/var/lib/mysql
+# Service baru untuk phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      # Akses phpMyAdmin dari browser di port 8081
+      - "8081:80"
+    environment:
+      # Menghubungkan phpMyAdmin ke service 'db' kita
+      PMA_HOST: db
+    depends_on:
+      - db
+      - phpmyadmin
 # Definisi volume untuk persistensi data database
 volumes:
   db-data:

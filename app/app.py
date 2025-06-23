@@ -15,7 +15,7 @@ db_pass = os.getenv("POSTGRES_PASSWORD")
 db_name = os.getenv("POSTGRES_DB")
 db_host = 'db' # Ini adalah nama service database di docker-compose.yml
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_pass}@{db_host}:5432/{db_name}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlclient://{db_user}:{db_pass}@{db_host}:3306/{db_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

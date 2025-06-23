@@ -1,5 +1,5 @@
 # app/requirements.txt
 flask
-psycopg2-binary
+mysqlclient
 flask-sqlalchemy
 python-dotenv
