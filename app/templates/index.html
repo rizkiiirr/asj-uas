@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UAS ASJ - To-Do App</title>
+</head>
+<body>
+    <h1>To-Do List Sederhana</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="content" placeholder="Tambahkan tugas baru..." required>
+        <button type="submit">Tambah</button>
+    </form>
+    <hr>
+    <h2>Daftar Tugas:</h2>
+    <ul>
+        {% for todo in todos %}
+            <li>{{ todo.content }} <a href="/delete/{{ todo.id }}"> (Hapus)</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
